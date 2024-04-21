@@ -63,18 +63,19 @@ def ObtenerDatos():
     Peticion = requests.get("https://www.eltiempo.com/economia")
     Noticias= []
     expresion = re.compile("/economia/[a-zA-Z]*/.*\">")
-    expresion2 = re.compile("<script type=\"application/ld.json\">{\"@context\".*}}}")
+    expresion2 = re.compile("<script\n.*>(.*}}})")
     for match in expresion.finditer(Peticion.text):
         Noticias.append(match.group().replace('">', ""))
     
     urlnoticia = "http://www.eltiempo.com" + random.choice(Noticias)
     print(urlnoticia)
     ContenidoNoticia = requests.get(urlnoticia)
+    print(ContenidoNoticia.text)
     with open("prueba.html", "w+") as archivo:
         archivo.write(ContenidoNoticia.text)
+
     for Contenido in expresion2.finditer(ContenidoNoticia.text):
-        print(Contenido)
-        informacion = json.loads(Contenido.group().replace('<script type="application/ld+json">', ""))
+        informacion = json.loads(Contenido.group(1).replace('<script type="application/ld+json">', ""))
     try:
         noticia = Noticia(
         autor=informacion["author"]["name"],
