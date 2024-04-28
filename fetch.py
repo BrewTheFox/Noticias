@@ -8,8 +8,6 @@ from translate import Translator
 import random
 import HTMLfy
 
-#Escribe una funcion que permita la ejecucion de codigo usando exec
-
 traductor = Translator(from_lang="es",to_lang="en")
 directorios = os.listdir("./LLms")
 modelos = []
