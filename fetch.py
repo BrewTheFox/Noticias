@@ -8,7 +8,26 @@ from translate import Translator
 import random
 import HTMLfy
 
+#Escribe una funcion que permita la ejecucion de codigo usando exec
+
 traductor = Translator(from_lang="es",to_lang="en")
+directorios = os.listdir("./LLms")
+modelos = []
+if len(directorios) > 1:
+    for modelo in directorios:
+        if modelo.lower().endswith(".gguf"):
+            modelos.append(modelo)
+for index, modelo in enumerate(modelos):
+    print(f"{index}){modelo.lower().capitalize()}")
+try:
+    modelo = "./LLms/" + modelos[int(input("¿Que modelo deseas usar (Indice)? \n >"))]
+    AI.LoadModel(modelo)
+except ValueError:
+    raise Exception("No se admite texto como entrada.")
+except IndexError:
+    raise Exception("No se encontro el indice.")
+
+
 def ObtenerDatos():
     class Noticia:
         def __init__(self, autor=None, titulo=None, fecha=None, fuente=None, articulo=None, imagen=None, link=None):
@@ -57,8 +76,6 @@ def ObtenerDatos():
             self.OpinionPersonal = AI.GenerarOpinion(self.articulo)
             return self.OpinionPersonal
             
-        
-        
 
     Peticion = requests.get("https://www.eltiempo.com/economia")
     Noticias= []
@@ -70,7 +87,6 @@ def ObtenerDatos():
     urlnoticia = "http://www.eltiempo.com" + random.choice(Noticias)
     print(urlnoticia)
     ContenidoNoticia = requests.get(urlnoticia)
-    print(ContenidoNoticia.text)
     with open("prueba.html", "w+") as archivo:
         archivo.write(ContenidoNoticia.text)
 
