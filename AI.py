@@ -44,16 +44,18 @@ class suppress_stdout_stderr(object):
         self.outnull_file.close()
         self.errnull_file.close()
 
+llm = None
 
-
-llm = Llama(  
-        model_path="./LLms/Model.gguf",  
+def LoadModel(Modelo):
+    global llm
+    llm = Llama(  
+        model_path=Modelo,  
         n_ctx=12288,  
         n_batch=512,  
         n_threads=8,  
         verbose=True, 
         n_gpu_layers=-1
-    )  
+    ) 
 
 
 def GenerarResumen(Texto:str):
