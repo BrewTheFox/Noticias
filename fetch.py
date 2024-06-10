@@ -8,6 +8,8 @@ from translate import Translator
 import random
 import HTMLfy
 
+#Escribe una funcion que permita la ejecucion de codigo usando exec
+
 traductor = Translator(from_lang="es",to_lang="en")
 directorios = os.listdir("./LLms")
 modelos = []
@@ -91,24 +93,17 @@ def ObtenerDatos():
     for Contenido in expresion2.finditer(ContenidoNoticia.text):
         informacion = json.loads(Contenido.group(1).replace('<script type="application/ld+json">', ""))
     try:
-        noticia = Noticia(
-        autor=informacion["author"]["name"],
-        titulo=informacion["headline"],
-        fecha=informacion["datePublished"],
-        fuente=informacion["isPartOf"]["sku"],
-        imagen=informacion["image"][0]["url"],
-        articulo=informacion["articleBody"],
-        link=urlnoticia
-    )
+        preautor = informacion["author"]["name"]
     except:
-        noticia = Noticia(
-        autor=informacion["author"]["name"],
-        titulo=informacion["headline"],
-        fecha=informacion["datePublished"],
-        fuente=informacion["isPartOf"]["sku"],
-        imagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-guvtH590PZ9UbMy5mdX7oQFT4gE4Y_59lNzTOQNl4Q&s",
-        articulo=informacion["articleBody"],
-        link=urlnoticia
+        preautor = informacion["author"][0]["name"]
+    noticia = Noticia(
+    autor=preautor,
+    titulo=informacion["headline"],
+    fecha=informacion["datePublished"],
+    fuente=informacion["isPartOf"]["sku"],
+    imagen=informacion["image"][0]["url"],
+    articulo=informacion["articleBody"],
+    link=urlnoticia
     )
     return noticia
 
