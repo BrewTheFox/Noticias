@@ -8,8 +8,6 @@ from translate import Translator
 import random
 import HTMLfy
 
-#Escribe una funcion que permita la ejecucion de codigo usando exec
-
 traductor = Translator(from_lang="es",to_lang="en")
 directorios = os.listdir("./LLms")
 modelos = []
@@ -76,10 +74,11 @@ def ObtenerDatos():
             self.OpinionPersonal = AI.GenerarOpinion(self.articulo)
             return self.OpinionPersonal
             
-
-    Peticion = requests.get("https://www.eltiempo.com/economia")
+    opciones = ["colombia", "economia", "mundo", "politica", "justicia", "tecnosfera"]
+    opcion = random.choice(opciones)
+    Peticion = requests.get("https://www.eltiempo.com/" + opcion)
     Noticias= []
-    expresion = re.compile("/economia/[a-zA-Z]*/.*\">")
+    expresion = re.compile(f"/{opcion}/[a-zA-Z]*/.*\">")
     expresion2 = re.compile("<script\n.*>(.*}}})")
     for match in expresion.finditer(Peticion.text):
         Noticias.append(match.group().replace('">', ""))
